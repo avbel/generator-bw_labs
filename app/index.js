@@ -1,6 +1,7 @@
 'use strict';
 var util = require('util');
 var path = require('path');
+var fs = require('fs');
 var yeoman = require('yeoman-generator');
 var yosay = require('yosay');
 var chalk = require('chalk');
@@ -10,22 +11,15 @@ debugger;
 var BwLabsGenerator = yeoman.generators.Base.extend({
   constructor: function(){
     yeoman.generators.Base.apply(this, arguments);
-    this.option('enable-db', {desc: 'Enable database support'});
-    this.option('enable-views', {desc: 'Enable views support'});
-    this.option('enable-gulp', {desc: 'Enable gulp support'});
-    this.option('enable-bower', {desc: 'Enable bower support'});
+    this.option('enable-db', {desc: 'Enable database support', defaults: null});
+    this.option('enable-views', {desc: 'Enable views support', defaults: null});
+    this.option('enable-gulp', {desc: 'Enable gulp support', defaults: null});
+    this.option('enable-bower', {desc: 'Enable bower support', defaults: null});
     this.option('db-driver', {desc: 'Database driver', type: String, defaults: 'mongodb'});
-  },
-
-  init: function () {
     this.pkg = require('../package.json');
-    this.on('end', function () {
-      if (!this.options['skip-install']) {
-        var dest = this.dest._base;
-        this.installDependencies({callback: function(){
-          this.copy(path.join(dest, 'node_modules/bw_labs/config/app.yml.sample'), 'config/app.yml.sample');
-        }});
-      }
+    this.on("error", function(err){
+      console.log(chalk.bold.red(err));
+      process.exit(1);
     });
   },
 
@@ -99,7 +93,8 @@ var BwLabsGenerator = yeoman.generators.Base.extend({
   },
 
   app: function () {
-    if(drivers.indexOf(this.options['db-driver']) < 0) throw new Error('Invalid db driver ' + this.options['db-driver']);
+    var done = this.async();
+    if(drivers.indexOf(this.options['db-driver']) < 0) return done('Invalid db driver ' + this.options['db-driver']);
     this.options.modules = ['bw_labs'];
     this.options.devModules = ['mocha', 'should', 'co-supertest', 'supertest', 'sinon'];
     this.copy('index.js', 'index.js');
@@ -135,11 +130,27 @@ var BwLabsGenerator = yeoman.generators.Base.extend({
     if(this.options['enable-bower']){
       this.template('_bower.json'  , 'bower.json');
     }
+    done();
   },
 
   projectfiles: function () {
     this.copy('jshintrc', '.jshintrc');
     this.copy('_gitignore', '.gitignore');
+  },
+
+  install: function () {
+    if (this.options['skip-install']) {
+      return;
+    }
+    var done = this.async();
+    var dest = this.destinationRoot();
+    this.installDependencies({callback: function(err){
+      if(err) return done(err);
+      if(!fs.existsSync(path.join(dest, 'config/app.yml.sample'))){
+        this.copy(path.join(dest, 'node_modules/bw_labs/config/app.yml.sample'), 'config/app.yml.sample');
+      }
+      done();
+    }.bind(this)});
   }
 });
 

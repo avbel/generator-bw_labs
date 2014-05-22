@@ -1,0 +1,6 @@
+<% var name = _.underscored(_.slugify(appname)); if(options.dbProtocol){%><%="connectionString: " + options.dbProtocol + "://localhost/" + name %>
+<%="testConnectionString: " + options.dbProtocol + "://localhost/" + name + "_test" %>
+<% }%>
+<% if(options["enable-views"]){%>views:
+  enabled: true
+<% }%>

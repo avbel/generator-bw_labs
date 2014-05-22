@@ -14,7 +14,7 @@ var BwLabsGenerator = yeoman.generators.Base.extend({
     this.option('enable-views', {desc: 'Enable views support', defaults: null});
     this.option('enable-gulp', {desc: 'Enable gulp support', defaults: null});
     this.option('enable-bower', {desc: 'Enable bower support', defaults: null});
-    this.option('db-driver', {desc: 'Database driver', type: String, defaults: null});
+    this.option('db-driver', {desc: 'Database driver (mongodb, mysql, postgres, sqlite)', type: String, defaults: null});
     this.pkg = require('../package.json');
     this.on("error", function(err){
       console.log(chalk.bold.red(err));

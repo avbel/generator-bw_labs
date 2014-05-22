@@ -5,17 +5,28 @@ var yeoman = require('yeoman-generator');
 var yosay = require('yosay');
 var chalk = require('chalk');
 
-
+var drivers = [ 'mongodb', 'mysql', 'postgres', 'sqlite'];
+debugger;
 var BwLabsGenerator = yeoman.generators.Base.extend({
+  constructor: function(){
+    yeoman.generators.Base.apply(this, arguments);
+    this.option('enable-db', {desc: 'Enable database support'});
+    this.option('enable-views', {desc: 'Enable views support'});
+    this.option('enable-gulp', {desc: 'Enable gulp support'});
+    this.option('enable-bower', {desc: 'Enable bower support'});
+    this.option('db-driver', {desc: 'Database driver', type: String, defaults: 'mongodb'});
+  },
+
   init: function () {
     this.pkg = require('../package.json');
-
     this.on('end', function () {
       if (!this.options['skip-install']) {
-        this.installDependencies();
-        //this.copy(path.join(this.dest._base, 'node_modules/bw_labs/config/app.yml.sample'), 'config/app.yml.sample');
+        var dest = this.dest._base;
+        this.installDependencies({callback: function(){
+          this.copy(path.join(dest, 'node_modules/bw_labs/config/app.yml.sample'), 'config/app.yml.sample');
+        }});
       }
-    }.bind(this));
+    });
   },
 
   askFor: function () {
@@ -26,7 +37,7 @@ var BwLabsGenerator = yeoman.generators.Base.extend({
     var prompts = [];
     var opts = this.options;
 
-    if(this.options['enable-db'] == null){
+    if(opts['enable-db'] == null){
       prompts.push({
         type: 'confirm',
         name: 'enable-db',
@@ -35,7 +46,7 @@ var BwLabsGenerator = yeoman.generators.Base.extend({
       });
     }
 
-    if(this.options['enable-views'] == null){
+    if(opts['enable-views'] == null){
       prompts.push({
         type: 'confirm',
         name: 'enable-views',
@@ -44,7 +55,7 @@ var BwLabsGenerator = yeoman.generators.Base.extend({
       });
     }
 
-    if(this.options['enable-gulp'] == null){
+    if(opts['enable-gulp'] == null){
       prompts.push({
         type: 'confirm',
         name: 'enable-gulp',
@@ -53,23 +64,23 @@ var BwLabsGenerator = yeoman.generators.Base.extend({
       });
     }
 
-    if(this.options['enable-bower'] == null){
+    if(opts['enable-bower'] == null){
       prompts.push({
         type: 'confirm',
         name: 'enable-bower',
         message: 'Are you going to use bower?',
-        default: false
+        default: true
       });
     }
 
     this.prompt(prompts, function (props) {
       util._extend(opts, props);
-      if(this.options['enable-db']){
-        if(this.options['db-driver'] == null){
+      if(opts['enable-db']){
+        if(opts['db-driver'] == null){
           this.prompt([{
             type: 'list',
             name: 'db-driver',
-            choices: [ "mongodb", "mysql", "postgres", "sqlite"],
+            choices: drivers,
             message: 'Which database would you like to use?',
             default: 'mongodb'
           }], function (props) {
@@ -88,33 +99,34 @@ var BwLabsGenerator = yeoman.generators.Base.extend({
   },
 
   app: function () {
-    this.options.modules = ["bw_labs"];
-    this.options.devModules = ["mocha", "should", "co-supertest", "supertest", "sinon"];
+    if(drivers.indexOf(this.options['db-driver']) < 0) throw new Error('Invalid db driver ' + this.options['db-driver']);
+    this.options.modules = ['bw_labs'];
+    this.options.devModules = ['mocha', 'should', 'co-supertest', 'supertest', 'sinon'];
     this.copy('index.js', 'index.js');
     this.mkdir('app');
     this.mkdir('app/controllers');
     this.mkdir('app/middlewares');
     this.mkdir('app/services');
-    if(this.options["enable-db"]){
-      this.options.modules.push("parse-database-url");
+    if(this.options['enable-db']){
+      this.options.modules.push('parse-database-url');
       this.mkdir('app/models');
-      if(this.options["db-driver"] != "mongodb"){
-        var prefix = getDbModule(this.options["db-driver"]);
+      if(this.options['db-driver'] != 'mongodb'){
+        var prefix = getDbModule(this.options['db-driver']);
         this.mkdir('migrations');
-        this.options.modules = this.options.modules.concat(["knex", "bookshelf", prefix]);
+        this.options.modules = this.options.modules.concat(['knex', 'bookshelf', prefix]);
         this.options.dbProtocol = prefix;
       }
       else{
-        this.options.modules = this.options.modules.concat(["mongoose", "mongoose-q"]);
-        this.options.dbProtocol = "mongodb";
+        this.options.modules = this.options.modules.concat(['mongoose', 'mongoose-q']);
+        this.options.dbProtocol = 'mongodb';
       }
     }
-    if(this.options["enable-views"]){
-      this.options.modules = this.options.modules.concat(["co-render", "then-jade"]);
+    if(this.options['enable-views']){
+      this.options.modules = this.options.modules.concat(['co-render', 'then-jade']);
       this.mkdir('app/views');
     }
-    if(this.options["enable-gulp"]){
-      this.options.devModules.push("gulp");
+    if(this.options['enable-gulp']){
+      this.options.devModules.push('gulp');
       this.copy('gulpfile.js', 'gulpfile.js');
     }
     this.mkdir('config');
@@ -133,8 +145,8 @@ var BwLabsGenerator = yeoman.generators.Base.extend({
 
 
 function getDbModule(name){
-  if(name == "postgres") return "pg";
-  if(name == "sqlite") return "sqlite3";
+  if(name == 'postgres') return 'pg';
+  if(name == 'sqlite') return 'sqlite3';
   return name;
 }
 

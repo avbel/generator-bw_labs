@@ -7,7 +7,6 @@ var yosay = require('yosay');
 var chalk = require('chalk');
 
 var drivers = [ 'mongodb', 'mysql', 'postgres', 'sqlite'];
-debugger;
 var BwLabsGenerator = yeoman.generators.Base.extend({
   constructor: function(){
     yeoman.generators.Base.apply(this, arguments);
@@ -15,7 +14,7 @@ var BwLabsGenerator = yeoman.generators.Base.extend({
     this.option('enable-views', {desc: 'Enable views support', defaults: null});
     this.option('enable-gulp', {desc: 'Enable gulp support', defaults: null});
     this.option('enable-bower', {desc: 'Enable bower support', defaults: null});
-    this.option('db-driver', {desc: 'Database driver', type: String, defaults: 'mongodb'});
+    this.option('db-driver', {desc: 'Database driver', type: String, defaults: null});
     this.pkg = require('../package.json');
     this.on("error", function(err){
       console.log(chalk.bold.red(err));
@@ -123,6 +122,11 @@ var BwLabsGenerator = yeoman.generators.Base.extend({
     if(this.options['enable-gulp']){
       this.options.devModules.push('gulp');
       this.copy('gulpfile.js', 'gulpfile.js');
+      this.mkdir('assets');
+      this.mkdir('assets/css');
+      this.mkdir('assets/js');
+      this.mkdir('assets/images');
+      this.mkdir('assets/fonts');
     }
     this.mkdir('config');
     this.template('_app.yml', 'config/app.yml');
@@ -130,6 +134,8 @@ var BwLabsGenerator = yeoman.generators.Base.extend({
     if(this.options['enable-bower']){
       this.template('_bower.json'  , 'bower.json');
     }
+    this.mkdir('test');
+    this.copy('mocha.opts', 'test/mocha.opts');
     done();
   },
 

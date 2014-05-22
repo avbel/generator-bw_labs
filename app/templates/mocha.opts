@@ -1,0 +1,8 @@
+ --require should
+ --require co-mocha
+ --require co-supertest
+ --require bw_labs
+ --reporter dot
+ --recursive
+ --slow 2s
+ --timeout 20s

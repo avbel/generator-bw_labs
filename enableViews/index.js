@@ -20,11 +20,17 @@ var EnableViewsGenerator = yeoman.generators.Base.extend({
       cfg.views = cfg.views || {};
       cfg.views.enabled = true;
       config.saveAppConfigFile.call(this, cfg);
-      this.npmInstall(['co-render', 'then-jade'], {save: true}, function(err){
-        if(err) return done(err);
-        console.log(chalk.green('Views support is enabled'));
-        done();
-      });
+      var p = config.loadJSON.call(this, "package.json");
+      if(!p.dependencies['co-render']) p.dependencies['co-render'] ='*';
+      if(!p.dependencies['then-jade']) p.dependencies['then-jade'] ='*';
+      config.saveJSON.call(this, "package.json", p);
+      console.log(chalk.green('Views support is enabled'));
+      if(this.options['skip-install']){
+        done()
+      }
+      else{
+        this.installDependencies(done);
+      }
     }
     catch(err){
       done(err);

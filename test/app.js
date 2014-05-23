@@ -198,7 +198,7 @@ describe('bw_labs generator', function () {
     }, done);
   });
 
-  it('fill package.json and app.yml with valid data (mysql)', function (done) {
+  it('fills package.json and app.yml with valid data (mysql)', function (done) {
     runWithPromtsAndOptions({
       'enable-db': true,
       'db-driver': 'mysql',
@@ -217,7 +217,7 @@ describe('bw_labs generator', function () {
     }, done);
   });
 
-  it('fill package.json and app.yml with valid data (postgres)', function (done) {
+  it('fills package.json and app.yml with valid data (postgres)', function (done) {
     runWithPromtsAndOptions({
       'enable-db': true,
       'db-driver': 'postgres',
@@ -236,7 +236,7 @@ describe('bw_labs generator', function () {
     }, done);
   });
 
-  it('fill package.json and app.yml with valid data (sqlite)', function (done) {
+  it('fills package.json and app.yml with valid data (sqlite)', function (done) {
     runWithPromtsAndOptions({
       'enable-db': true,
       'db-driver': 'sqlite',

@@ -93,7 +93,7 @@ var BwLabsGenerator = yeoman.generators.Base.extend({
 
   app: function () {
     var done = this.async();
-    if(drivers.indexOf(this.options['db-driver']) < 0) return done('Invalid db driver ' + this.options['db-driver']);
+    if(this.options['enable-db'] && drivers.indexOf(this.options['db-driver']) < 0) return done('Invalid db driver ' + this.options['db-driver']);
     this.options.modules = ['bw_labs'];
     this.options.devModules = ['mocha', 'should', 'co-supertest', 'supertest', 'sinon'];
     this.copy('index.js', 'index.js');

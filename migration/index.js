@@ -10,13 +10,13 @@ function format(n){
   return s;
 }
 
-var ServiceGenerator = yeoman.generators.NamedBase.extend({
+var MigrationGenerator = yeoman.generators.NamedBase.extend({
   files: function () {
     var d = new Date();
     this.mkdir('migrations');
     this.copy('migration.js', 'migrations/' + d.getFullYear() + format(d.getMonth()+1) +
-      format(d.getDate()) + format(d.getHours()) + format(d.getMinutes())  + format(d.getSeconds()) + "_" + this._.camelize(this.name) + '.js');
+      format(d.getDate()) + format(d.getHours()) + format(d.getMinutes())  + format(d.getSeconds()) + "_" + this._.camelize(this._.underscored(this.name)) + '.js');
   }
 });
 
-module.exports = ServiceGenerator;
+module.exports = MigrationGenerator;

@@ -24,6 +24,8 @@ Run  yo bw_labs:enableDb  to add database support (if you didn't that before).
 
 Run  yo bw_labs:enableViews  to add views support (if you didn't that before).
 
+Run  yo bw_labs:enableAuth  to enable authentification support (it will install bw_labs.auth plugin and generate key file keys.yml).
+
 Run  yo bw_labs:service *name*  to create new service file.
 
 Run  yo bw_labs:model *name*  to create new model file.

@@ -62,11 +62,18 @@ var EnableDbGenerator = yeoman.generators.Base.extend({
           cfg.testConnectionString = cfg.connectionString + "_test";
         }
         config.saveAppConfigFile.call(this, cfg);
-        this.npmInstall(modules, {save: true}, function(err){
-          if(err) return done(err);
-          console.log(chalk.green('Database support is enabled'));
-          done();
+        var p = config.loadJSON.call(this, "package.json");
+        modules.forEach(function(m){
+          if(!p.dependencies[m]) p.dependencies[m] ='*';
         });
+        config.saveJSON.call(this, "package.json", p);
+        console.log(chalk.green('Database support is enabled'));
+        if(this.options['skip-install']){
+          done()
+        }
+        else{
+          this.installDependencies(done);
+        }
       }.bind(this));
 
     }

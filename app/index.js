@@ -62,7 +62,7 @@ var BwLabsGenerator = yeoman.generators.Base.extend({
         type: 'confirm',
         name: 'enable-bower',
         message: 'Are you going to use bower?',
-        default: true
+        default: false
       });
     }
 

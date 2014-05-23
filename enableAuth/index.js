@@ -41,13 +41,9 @@ var EnableAuthGenerator = yeoman.generators.Base.extend({
         };
         config.saveAppConfigFile.call(this, 'keys.yml', keys);
       }
-      var cfg = config.loadAppConfigFile.call(this);
-      cfg.views = cfg.views || {};
-      cfg.views.enabled = true;
-      config.saveAppConfigFile.call(this, cfg);
+      this.invoke("bw_labs:enableViews", {options: {nested: true, 'skip-install': true }});
+
       var p = config.loadJSON.call(this, 'package.json');
-      if(!p.dependencies['co-render']) p.dependencies['co-render'] ='*';
-      if(!p.dependencies['then-jade']) p.dependencies['then-jade'] ='*';
       if(!p.dependencies['bw_labs.auth']) p.dependencies['bw_labs.auth'] ='*';
       if(!p.dependencies['bw_labs.email']) p.dependencies['bw_labs.email'] ='*';
       if(!p.dependencies['bw_labs.cache']) p.dependencies['bw_labs.cache'] ='*';

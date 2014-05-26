@@ -13,7 +13,7 @@ var EnableViewsGenerator = yeoman.generators.Base.extend({
       process.exit(1);
     });
   },
-  enableView: function () {
+  enableViews: function () {
     var done = this.async();
     try{
       var cfg = config.loadAppConfigFile.call(this);

@@ -154,14 +154,14 @@ describe('bw_labs generator', function () {
       'app/controllers',
       'app/middlewares',
       'app/services',
-      'gulpfile.js',
-      'assets'
+      'gulpfile.js'
     ];
     runWithPromtsAndOptions({
       'enable-db': false,
       'enable-views': false,
       'enable-bower': false,
-      'enable-gulp': true
+      'enable-gulp': true,
+      'simple-gulp': true
     }, function(cb){
       helpers.assertFile(expected);
       assert.noFile(['bower.json', 'app/views', 'app/models', 'migrations']);
@@ -183,15 +183,15 @@ describe('bw_labs generator', function () {
       'app/views',
       'app/models',
       'app/services',
-      'migrations',
-      'assets'
+      'migrations'
     ];
     runWithPromtsAndOptions({
       'enable-db': true,
       'db-driver': 'mysql',
       'enable-views': true,
       'enable-bower': true,
-      'enable-gulp': true
+      'enable-gulp': true,
+      'simple-gulp': true
     }, function(cb){
       helpers.assertFile(expected);
       cb();

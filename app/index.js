@@ -13,6 +13,7 @@ var BwLabsGenerator = yeoman.generators.Base.extend({
     this.option('enable-db', {desc: 'Enable database support', defaults: null});
     this.option('enable-views', {desc: 'Enable views support', defaults: null});
     this.option('enable-gulp', {desc: 'Enable gulp support', defaults: null});
+    this.option('simple-gulp', {desc: 'Create simple gulpfile.js', defaults: null});
     this.option('enable-bower', {desc: 'Enable bower support', defaults: null});
     this.option('db-driver', {desc: 'Database driver (mongodb, mysql, postgres, sqlite)', type: String, defaults: null});
     this.pkg = require('../package.json');
@@ -119,15 +120,11 @@ var BwLabsGenerator = yeoman.generators.Base.extend({
       this.options.modules = this.options.modules.concat(['co-render', 'then-jade']);
       this.mkdir('app/views');
     }
-    if(this.options['enable-gulp']){
+    if(this.options['enable-gulp'] && this.options['simple-gulp']){
       this.options.devModules.push('gulp');
       this.copy('gulpfile.js', 'gulpfile.js');
-      this.mkdir('assets');
-      this.mkdir('assets/css');
-      this.mkdir('assets/js');
-      this.mkdir('assets/images');
-      this.mkdir('assets/fonts');
     }
+
     this.mkdir('config');
     this.template('_app.yml', 'config/app.yml');
     this.template('_package.json', 'package.json');
@@ -136,7 +133,12 @@ var BwLabsGenerator = yeoman.generators.Base.extend({
     }
     this.mkdir('test');
     this.copy('mocha.opts', 'test/mocha.opts');
-    done();
+    if(this.options['enable-gulp'] && !this.options['simple-gulp']){
+      this.invoke("bw_labs:gulpFile", {options: {nested: true, 'skip-install': true }}, done);
+    }
+    else{
+      done();
+    }
   },
 
   projectfiles: function () {

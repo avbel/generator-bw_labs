@@ -8,6 +8,7 @@ var helpers = generator.test;
 var assert = generator.assert;
 
 var run = function (done) {
+  var self = this;
   helpers.testDirectory(path.join(__dirname, 'temp'), function (err) {
     if (err) {
       return done(err);
@@ -20,23 +21,23 @@ var run = function (done) {
       'enable-db': false,
       'enable-views': false,
       'enable-bower': false,
-      'enable-gulp': false
+      'enable-gulp': true,
+      'simple-gulp': true
     };
     for(var k in opts){
       app.options[k] = opts[k];
     }
     app.run({}, function(err){
       if(err) return done(err);
-      var g = helpers.createGenerator('bw_labs:enableAuth', [
-        '../../enableAuth'
+      var g = helpers.createGenerator('bw_labs:runGulp', [
+        '../../runGulp'
       ]);
       g.options['skip-install'] = true;
-      helpers.stub(g, "invoke", function(name){
-        assert(name == 'bw_labs:enableViews');
-      });
+      g.options['skip-run'] = true;
       g.run({}, function(err){
-        helpers.restore();
-        done(err);
+        if(err) return done(err);
+        self.commandLine = g.commandLine;
+        done();
       });
     });
   });
@@ -47,19 +48,14 @@ var loadJSON = function(file){
 };
 
 
-describe('bw_labs:enableAuth generator', function () {
-  it('fills package.json and app.yml with valid data and create keys.yml', function (done) {
-    run(function(){
+describe('bw_labs:runGulp generator', function () {
+  it('run gulp with right arguments', function (done) {
+    run.call(this, function(err){
+      if(err) return done(err);
+      assert(this.commandLine == 'node --harmony /home/user/projects/generator-bw_labs/test/temp/node_modules/.bin/gulp');
       var p = loadJSON(path.join(process.cwd(), 'package.json'));
-      assert(typeof p.dependencies['bw_labs.auth'] == 'string');
-      assert(typeof p.dependencies['bw_labs.email'] == 'string');
-      assert(typeof p.dependencies['bw_labs.cache'] == 'string');
-      var cfg = yaml.safeLoad(fs.readFileSync(path.join(process.cwd(), 'config', 'keys.yml'), 'utf8'));
-      assert(Array.isArray(cfg.cookie));
-      assert(cfg.cookie.length > 0);
-      assert(typeof cfg.pepper == "string");
-      assert(cfg.pepper.length > 0);
+      assert(typeof p.devDependencies['gulp'] == 'string');
       done();
-    });
+    }.bind(this));
   });
 });

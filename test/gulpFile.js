@@ -8,6 +8,7 @@ var helpers = generator.test;
 var assert = generator.assert;
 
 var run = function (done) {
+  var self = this;
   helpers.testDirectory(path.join(__dirname, 'temp'), function (err) {
     if (err) {
       return done(err);
@@ -20,24 +21,22 @@ var run = function (done) {
       'enable-db': false,
       'enable-views': false,
       'enable-bower': false,
-      'enable-gulp': false
+      'enable-gulp': false,
+      'simple-gulp': false
     };
     for(var k in opts){
       app.options[k] = opts[k];
     }
     app.run({}, function(err){
       if(err) return done(err);
-      var g = helpers.createGenerator('bw_labs:enableAuth', [
-        '../../enableAuth'
+      var g = helpers.createGenerator('bw_labs:gulpFile', [
+        '../../gulpFile'
       ]);
       g.options['skip-install'] = true;
-      helpers.stub(g, "invoke", function(name){
-        assert(name == 'bw_labs:enableViews');
+      helpers.mockPrompt(g, {
+        features: ['concat', 'bower']
       });
-      g.run({}, function(err){
-        helpers.restore();
-        done(err);
-      });
+      g.run({}, done);
     });
   });
 };
@@ -47,18 +46,20 @@ var loadJSON = function(file){
 };
 
 
-describe('bw_labs:enableAuth generator', function () {
-  it('fills package.json and app.yml with valid data and create keys.yml', function (done) {
-    run(function(){
+describe('bw_labs:gulpFile generator', function () {
+  it('creates right gulpfile.js', function (done) {
+    run(function(err){
+      debugger;
+      if(err) return done(err);
       var p = loadJSON(path.join(process.cwd(), 'package.json'));
-      assert(typeof p.dependencies['bw_labs.auth'] == 'string');
-      assert(typeof p.dependencies['bw_labs.email'] == 'string');
-      assert(typeof p.dependencies['bw_labs.cache'] == 'string');
-      var cfg = yaml.safeLoad(fs.readFileSync(path.join(process.cwd(), 'config', 'keys.yml'), 'utf8'));
-      assert(Array.isArray(cfg.cookie));
-      assert(cfg.cookie.length > 0);
-      assert(typeof cfg.pepper == "string");
-      assert(cfg.pepper.length > 0);
+      assert(typeof p.devDependencies['gulp'] == 'string');
+      assert(typeof p.devDependencies['gulp-concat'] == 'string');
+      assert(typeof p.devDependencies['gulp-bower'] == 'string');
+      assert(p.devDependencies['supervisor'] == null);
+      helpers.assertFile('gulpfile.js');
+      var content = fs.readFileSync('gulpfile.js', 'utf8');
+      assert(content.indexOf('bower') >= 0);
+      assert(content.indexOf('concat') >= 0);
       done();
     });
   });

@@ -38,7 +38,6 @@ var GulpFileGenerator = yeoman.generators.Base.extend({
       this.mkdir('assets/vendor/js');
       this.mkdir('assets/vendor/images');
       this.mkdir('assets/vendor/fonts');
-      debugger;
       if(this.options['skip-install']){
         done()
       }

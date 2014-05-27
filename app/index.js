@@ -133,12 +133,7 @@ var BwLabsGenerator = yeoman.generators.Base.extend({
     }
     this.mkdir('test');
     this.copy('mocha.opts', 'test/mocha.opts');
-    if(this.options['enable-gulp'] && !this.options['simple-gulp']){
-      this.invoke("bw_labs:gulpFile", {options: {nested: true, 'skip-install': true }}, done);
-    }
-    else{
-      done();
-    }
+    done();
   },
 
   projectfiles: function () {
@@ -152,13 +147,24 @@ var BwLabsGenerator = yeoman.generators.Base.extend({
     }
     var done = this.async();
     var dest = this.destinationRoot();
-    this.installDependencies({callback: function(err){
-      if(err) return done(err);
-      if(!fs.existsSync(path.join(dest, 'config/app.yml.sample'))){
-        this.copy(path.join(dest, 'node_modules/bw_labs/config/app.yml.sample'), 'config/app.yml.sample');
+    var createGulpFileIfNeed = function(callback){
+      if(this.options['enable-gulp'] && !this.options['simple-gulp']){
+        this.invoke("bw_labs:gulpFile", {options: {nested: true, 'skip-install': true }}, callback);
       }
-      done();
-    }.bind(this)});
+      else{
+        callback();
+      }
+    };
+    createGulpFileIfNeed.call(this, function(err){
+      if(err) return done(err);
+      this.installDependencies({callback: function(err){
+        if(err) return done(err);
+        if(!fs.existsSync(path.join(dest, 'config/app.yml.sample'))){
+          this.copy(path.join(dest, 'node_modules/bw_labs/config/app.yml.sample'), 'config/app.yml.sample');
+        }
+        done();
+      }.bind(this)});
+    }.bind(this));
   }
 });
 

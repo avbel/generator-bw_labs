@@ -1,0 +1,118 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/home/user/.nvm/v0.11.13/bin/npm', 'publish' ]
+2 info using npm@1.4.10
+3 info using node@v0.11.13
+4 verbose publish [ '.' ]
+5 verbose cache add [ '.', null ]
+6 verbose cache add name=undefined spec="." args=[".",null]
+7 verbose parsed url { protocol: null,
+7 verbose parsed url   slashes: null,
+7 verbose parsed url   auth: null,
+7 verbose parsed url   host: null,
+7 verbose parsed url   port: null,
+7 verbose parsed url   hostname: null,
+7 verbose parsed url   hash: null,
+7 verbose parsed url   search: null,
+7 verbose parsed url   query: null,
+7 verbose parsed url   pathname: '.',
+7 verbose parsed url   path: '.',
+7 verbose parsed url   href: '.' }
+8 silly lockFile 3a52ce78- .
+9 verbose lock . /home/user/.npm/3a52ce78-.lock
+10 verbose tar pack [ '/home/user/tmp/npm-19481-lF2nkGV0/1401171577616-0.6535823754966259/tmp.tgz',
+10 verbose tar pack   '.' ]
+11 verbose tarball /home/user/tmp/npm-19481-lF2nkGV0/1401171577616-0.6535823754966259/tmp.tgz
+12 verbose folder .
+13 info prepublish generator-bw-labs@0.0.4
+14 silly lockFile 1f1177db-tar tar://.
+15 verbose lock tar://. /home/user/.npm/1f1177db-tar.lock
+16 silly lockFile 73023d22-77616-0-6535823754966259-tmp-tgz tar:///home/user/tmp/npm-19481-lF2nkGV0/1401171577616-0.6535823754966259/tmp.tgz
+17 verbose lock tar:///home/user/tmp/npm-19481-lF2nkGV0/1401171577616-0.6535823754966259/tmp.tgz /home/user/.npm/73023d22-77616-0-6535823754966259-tmp-tgz.lock
+18 silly lockFile 1f1177db-tar tar://.
+19 silly lockFile 1f1177db-tar tar://.
+20 silly lockFile 73023d22-77616-0-6535823754966259-tmp-tgz tar:///home/user/tmp/npm-19481-lF2nkGV0/1401171577616-0.6535823754966259/tmp.tgz
+21 silly lockFile 73023d22-77616-0-6535823754966259-tmp-tgz tar:///home/user/tmp/npm-19481-lF2nkGV0/1401171577616-0.6535823754966259/tmp.tgz
+22 verbose tar unpack /home/user/tmp/npm-19481-lF2nkGV0/1401171577616-0.6535823754966259/tmp.tgz
+23 silly lockFile eb514004--generator-bw-labs-0-0-4-package tar:///home/user/.npm/generator-bw-labs/0.0.4/package
+24 verbose lock tar:///home/user/.npm/generator-bw-labs/0.0.4/package /home/user/.npm/eb514004--generator-bw-labs-0-0-4-package.lock
+25 silly lockFile 73023d22-77616-0-6535823754966259-tmp-tgz tar:///home/user/tmp/npm-19481-lF2nkGV0/1401171577616-0.6535823754966259/tmp.tgz
+26 verbose lock tar:///home/user/tmp/npm-19481-lF2nkGV0/1401171577616-0.6535823754966259/tmp.tgz /home/user/.npm/73023d22-77616-0-6535823754966259-tmp-tgz.lock
+27 silly gunzTarPerm modes [ '755', '644' ]
+28 silly gunzTarPerm extractEntry package.json
+29 silly gunzTarPerm extractEntry README.md
+30 silly gunzTarPerm extractEntry app/index.js
+31 silly gunzTarPerm extractEntry app/USAGE
+32 silly gunzTarPerm extractEntry app/templates/gulpfile.js
+33 silly gunzTarPerm extractEntry app/templates/index.js
+34 silly gunzTarPerm extractEntry app/templates/_app.yml
+35 silly gunzTarPerm extractEntry app/templates/_bower.json
+36 silly gunzTarPerm extractEntry app/templates/_gitignore
+37 silly gunzTarPerm extractEntry app/templates/_package.json
+38 silly gunzTarPerm extractEntry app/templates/jshintrc
+39 silly gunzTarPerm extractEntry app/templates/mocha.opts
+40 silly lockFile eb514004--generator-bw-labs-0-0-4-package tar:///home/user/.npm/generator-bw-labs/0.0.4/package
+41 silly lockFile eb514004--generator-bw-labs-0-0-4-package tar:///home/user/.npm/generator-bw-labs/0.0.4/package
+42 silly lockFile 73023d22-77616-0-6535823754966259-tmp-tgz tar:///home/user/tmp/npm-19481-lF2nkGV0/1401171577616-0.6535823754966259/tmp.tgz
+43 silly lockFile 73023d22-77616-0-6535823754966259-tmp-tgz tar:///home/user/tmp/npm-19481-lF2nkGV0/1401171577616-0.6535823754966259/tmp.tgz
+44 silly lockFile 3a52ce78- .
+45 silly lockFile 3a52ce78- .
+46 silly publish { name: 'generator-bw-labs',
+46 silly publish   version: '0.0.4',
+46 silly publish   description: 'Yeoman generator for bw_labs web apps',
+46 silly publish   license: 'MIT',
+46 silly publish   main: 'app/index.js',
+46 silly publish   repository: { type: 'git', url: 'git://github.com/avbel/generator-bw-labs' },
+46 silly publish   author: { url: 'https://github.com/avbel' },
+46 silly publish   engines: { node: '>=0.10.0' },
+46 silly publish   scripts: { test: 'mocha' },
+46 silly publish   files: [ 'app' ],
+46 silly publish   keywords: [ 'yeoman-generator' ],
+46 silly publish   dependencies:
+46 silly publish    { chalk: '~0.4.0',
+46 silly publish      'js-yaml': '^3.0.2',
+46 silly publish      'yeoman-generator': '~0.16.0',
+46 silly publish      yosay: '^0.1.0' },
+46 silly publish   devDependencies: { mocha: '*' },
+46 silly publish   peerDependencies: { yo: '>=1.0.0' },
+46 silly publish   readme: '# generator-bw_labs\n\nInstall\n===============\nInstall yeoman generator tool first (if need)\n```\nnpm install -g yo\n```\nThen run\n\n```\nnpm install -g generator-bw_labs\n```\n\nUsage\n================\nRun yo bw_labs to create new bw_labs based project.\n\nRun yo bw_labs --help to see all supported switches.\n\n\n\nRun  yo bw_labs:enableDb  to add database support (if you didn\'t that before).\n\nRun  yo bw_labs:enableViews  to add views support (if you didn\'t that before).\n\nRun  yo bw_labs:enableAuth  to enable authentification support (it will install bw_labs.auth plugin and generate key file keys.yml).\n\nRun  yo bw_labs:gulpFile  to generate gulpfile.js and enable gulp support  (if need)\n\nRun  yo bw_labs:service *name*  to create new service file.\n\nRun  yo bw_labs:model *name*  to create new model file.\n\nRun  yo bw_labs:controller *name*  to create new controller file (run  yo bw_labs:controller __root  to generate root controller).\n\nRun  yo bw_labs:migration *name*  to create new migration file.\n\nRun  yo bw_labs:runGulp *args* to run installed local gulp with given options (with argument --harmony)\n',
+46 silly publish   readmeFilename: 'README.md',
+46 silly publish   bugs: { url: 'https://github.com/avbel/generator-bw-labs/issues' },
+46 silly publish   homepage: 'https://github.com/avbel/generator-bw-labs',
+46 silly publish   _id: 'generator-bw-labs@0.0.4',
+46 silly publish   _shasum: '17c06e5ba8f67bcd42ae040a93f9c711ca7af912',
+46 silly publish   _from: '.' }
+47 verbose url raw generator-bw-labs
+48 verbose url resolving [ 'https://npm.bwrnd.com/', './generator-bw-labs' ]
+49 verbose url resolved https://npm.bwrnd.com/generator-bw-labs
+50 info trying registry request attempt 1 at 23:19:37
+51 http PUT https://npm.bwrnd.com/generator-bw-labs
+52 http 409 https://npm.bwrnd.com/generator-bw-labs
+53 verbose headers { server: 'nginx/1.6.0',
+53 verbose headers   date: 'Tue, 27 May 2014 06:19:36 GMT',
+53 verbose headers   'content-type': 'application/json',
+53 verbose headers   'content-length': '48',
+53 verbose headers   connection: 'close',
+53 verbose headers   'x-powered-by': 'Sinopia/0.6.5',
+53 verbose headers   'x-status-cat': 'http://flic.kr/p/aV6jzz',
+53 verbose headers   vary: 'Accept-Encoding' }
+54 verbose url raw generator-bw-labs?write=true
+55 verbose url resolving [ 'https://npm.bwrnd.com/', './generator-bw-labs?write=true' ]
+56 verbose url resolved https://npm.bwrnd.com/generator-bw-labs?write=true
+57 info trying registry request attempt 1 at 23:19:38
+58 http GET https://npm.bwrnd.com/generator-bw-labs?write=true
+59 http 200 https://npm.bwrnd.com/generator-bw-labs?write=true
+60 error publish fail Cannot publish over existing version.
+60 error publish fail Update the 'version' field in package.json and try again.
+60 error publish fail
+60 error publish fail If the previous version was published in error, see:
+60 error publish fail     npm help unpublish
+60 error publish fail
+60 error publish fail To automatically increment version numbers, see:
+60 error publish fail     npm help version
+61 error System Linux 3.2.0-4-486
+62 error command "node" "/home/user/.nvm/v0.11.13/bin/npm" "publish"
+63 error cwd /home/user/projects/generator-bw_labs
+64 error node -v v0.11.13
+65 error npm -v 1.4.10
+66 error code EPUBLISHCONFLICT
+67 verbose exit [ 1, true ]

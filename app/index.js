@@ -116,10 +116,6 @@ var BwLabsGenerator = yeoman.generators.Base.extend({
         this.options.dbProtocol = 'mongodb';
       }
     }
-    if(this.options['enable-views']){
-      this.options.modules = this.options.modules.concat(['co-render', 'then-jade']);
-      this.mkdir('app/views');
-    }
     if(this.options['enable-gulp'] && this.options['simple-gulp']){
       this.options.devModules.push('gulp');
       this.copy('gulpfile.js', 'gulpfile.js');
@@ -149,21 +145,33 @@ var BwLabsGenerator = yeoman.generators.Base.extend({
     var dest = this.destinationRoot();
     var createGulpFileIfNeed = function(callback){
       if(this.options['enable-gulp'] && !this.options['simple-gulp']){
-        this.invoke("bw_labs:gulpFile", {options: {nested: true, 'skip-install': true }}, callback);
+        this.invoke("bw_labs:gulpFile", {options: {nested: true, 'skip-install': true, force: true }}, callback);
       }
       else{
         callback();
       }
     };
+    var enableViewsIfNeed = function(callback){
+      if(this.options['enable-views']){
+        this.invoke("bw_labs:enableViews", {options: {nested: true, 'skip-install': true, force: true }}, callback);
+      }
+      else{
+        callback();
+      }
+    };
+
     createGulpFileIfNeed.call(this, function(err){
       if(err) return done(err);
-      this.installDependencies({callback: function(err){
+      enableViewsIfNeed.call(this, function(err){
         if(err) return done(err);
-        if(!fs.existsSync(path.join(dest, 'config/app.yml.sample'))){
-          this.copy(path.join(dest, 'node_modules/bw_labs/config/app.yml.sample'), 'config/app.yml.sample');
-        }
-        done();
-      }.bind(this)});
+        this.installDependencies({callback: function(err){
+          if(err) return done(err);
+          if(!fs.existsSync(path.join(dest, 'config/app.yml.sample'))){
+            this.copy(path.join(dest, 'node_modules/bw_labs/config/app.yml.sample'), 'config/app.yml.sample');
+          }
+          done();
+        }.bind(this)});
+      }.bind(this));
     }.bind(this));
   }
 });

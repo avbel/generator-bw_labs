@@ -65,6 +65,11 @@ var EnableViewsGenerator = yeoman.generators.Base.extend({
           if(!p.dependencies['then-jade']) p.dependencies['then-jade'] ='*';
           config.saveJSON.call(this, "package.json", p);
           this.mkdir('app/views');
+          this.mkdir('assets');
+          this.mkdir('assets/images');
+          this.copy('favicon.ico', 'assets/images/favicon.ico');
+          this.mkdir('public');
+          this.copy('favicon.ico', 'public/favicon.ico');
           var createIndexIfNeed = function(callback){
             if(!fs.existsSync('app/controllers/__root.js')){
               this.invoke("bw_labs:controller", {args: ['__root'], options: {nested: true, 'skip-install': true,

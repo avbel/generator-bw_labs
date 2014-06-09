@@ -16,7 +16,7 @@ let paths = {
   },
   css:["assets/css/**/*.css"],
   js:["assets/js/**/*.js"],
-  images:["assets/images/**/*"],
+  images:["assets/images/**/*", "!assets/images/favicon.ico"],
   fonts:["assets/fonts/**/*"]
 };
 
@@ -77,7 +77,14 @@ gulp.task("vendor-images", <% if(hasFeature("bower")) {%>["bower"],<%} %> functi
 });
 
 
-gulp.task("default", ["css", "fonts", "images", "js", "vendor-css", "vendor-js", "vendor-fonts", "vendor-images"], function() {
+gulp.task("favicon.ico", function() {
+  return gulp.src("assets/images/favicon.ico")
+    .pipe(newer("./public"))
+    .pipe(gulp.dest("./public"));
+});
+
+
+gulp.task("default", ["css", "fonts", "images", "js", "vendor-css", "vendor-js", "vendor-fonts", "vendor-images", "favicon.ico"], function() {
 
 });
 <% if(hasFeature("livereload")) {%>
@@ -96,6 +103,8 @@ gulp.task("watch", ["default"], function() {
   lr(gulp.watch(paths.vendor.css, ["vendor-css"]));
   lr(gulp.watch(paths.vendor.fonts, ["vendor-fonts"]));
   lr(gulp.watch(paths.vendor.images, ["vendor-images"]));
+  lr(gulp.watch(paths.vendor.images, ["vendor-images"]));
+  lr(gulp.watch("assets/images/favicon.ico", ["favicon.ico"]));
   lr(gulp.watch("./app/**/*.jade"));
 });
 <%} %>
